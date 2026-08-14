@@ -154,10 +154,23 @@
                 <a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a>
             </nav>
             <div class="header-actions">
-                <div class="lang-switcher">
+                <!-- Desktop: three static buttons -->
+                <div class="lang-switcher lang-switcher--desktop">
                     <button class="lang-btn active" data-lang="de">DE</button>
                     <button class="lang-btn" data-lang="en">EN</button>
                     <button class="lang-btn" data-lang="fr">FR</button>
+                </div>
+                <!-- Mobile: compact dropdown -->
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-dropdown__toggle" id="langDropdownToggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen">
+                        <span class="lang-dropdown__label" id="langDropdownLabel">DE</span>
+                        <i class="fas fa-chevron-down lang-dropdown__arrow"></i>
+                    </button>
+                    <ul class="lang-dropdown__menu" role="listbox" id="langDropdownMenu">
+                        <li><button class="lang-dropdown__item active" role="option" data-lang="de">DE &mdash; Deutsch</button></li>
+                        <li><button class="lang-dropdown__item" role="option" data-lang="en">EN &mdash; English</button></li>
+                        <li><button class="lang-dropdown__item" role="option" data-lang="fr">FR &mdash; Français</button></li>
+                    </ul>
                 </div>
                 <a href="#contact" class="btn-primary">
                     <i class="fas fa-paper-plane"></i>
@@ -251,7 +264,8 @@
                 <div class="about-images">
                     <div class="about-img-main">
                         <!-- PHOTO LOCATION: Team photo or workshop interior, lazy loaded with dimensions -->
-                        <img src="img/fassaden/Treppen_Aussentreppe_Spindeltreppe.jpeg"
+                        <img id="about-slideshow-img"
+                             src="img/sonstiges/main.jpg"
                              alt="HSN Metallbau Team bei der Arbeit in der Werkstatt Kraichtal"
                              width="800" height="500"
                              loading="lazy"
@@ -531,126 +545,6 @@
         </div>
     </section>
 
-    <!-- NEW: DEDICATED "TREPPEN" (STAIRS) SECTION -->
-    <section class="treppen-section" id="treppen">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-tag" data-i18n="stairs_tag">Konstruktion & Design</div>
-                <h2 class="section-title" data-i18n="stairs_title">Maßgefertigte Treppen</h2>
-                <p class="section-desc" data-i18n="stairs_desc">Sichere und elegante Aufgänge für den Innen- und Außenbereich   individuell nach Ihren Wünschen gefertigt.</p>
-            </div>
-
-            <div class="about-grid" style="margin-bottom: 60px;">
-                <div class="about-content fade-in">
-                    <h3 data-i18n="stairs_subtitle">Treppenbau auf Meisterebene</h3>
-                    <p data-i18n="stairs_p1">Wir planen, fertigen und montieren Treppenanlagen für jeden Anspruch. Von der platzsparenden Wendeltreppe bis hin zu repräsentativen Haupttreppen kombinieren wir Ästhetik mit höchster Stabilität und Sicherheit.</p>
-                    
-                    <div style="margin-top: 32px;">
-                        <h4 style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 16px;">
-                            <i class="fas fa-tools" style="color: var(--color-accent); margin-right: 10px;"></i>
-                            <span data-i18n="stairs_materials_title">Materialvielfalt & Kombinationen</span>
-                        </h4>
-                        <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; color: var(--color-text-muted); font-size: 15px;">
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Stahl (verzinkt & lackiert)</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Hochwertiger Edelstahl</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Holz-Metall-Kombinationen</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Integriertes Verbundglas</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-top: 32px;">
-                        <h4 style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 16px;">
-                            <i class="fas fa-shield-halved" style="color: var(--color-accent); margin-right: 10px;"></i>
-                            <span data-i18n="stairs_safety_title">Sicherheitsmerkmale & Extras</span>
-                        </h4>
-                        <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; color: var(--color-text-muted); font-size: 15px;">
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Rutschhemmende Stufen</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> LED-Stufenbeleuchtung</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Normgerechte Handläufe</li>
-                            <li><i class="fas fa-check" style="color: var(--color-accent); margin-right: 8px;"></i> Kindersicherungen</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="about-images fade-in">
-                    <div class="about-img-main">
-                        <!-- PHOTO LOCATION: Stair photo, lazy loaded, width/height optimized -->
-                        <img src="img/treppen/Treppen_Wendeltreppe_Stahl_2.jpg" 
-                             alt="Maßgefertigte Wendeltreppe aus Edelstahl - HSN Metallbau Kraichtal" 
-                             width="800" height="500"
-                             loading="lazy"
-                             onerror="handleImageError(this)">
-                    </div>
-                    <div class="about-img-badge">
-                        <div class="number">100%</div>
-                        <div class="text" data-i18n="stairs_badge_text">Passgenauigkeit</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW: DEDICATED "BALKONE" (BALCONIES & TERRACES) SECTION -->
-    <section class="balkone-section" id="balkone">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-tag" data-i18n="balconies_tag">Wohnraum-Erweiterung</div>
-                <h2 class="section-title" data-i18n="balconies_title">Balkone & Terrassen</h2>
-                <p class="section-desc" data-i18n="balconies_desc">Mehr Lebensqualität im Freien   solide Balkonsysteme und elegante Geländer für Neubau und Sanierung.</p>
-            </div>
-
-            <div class="about-grid" style="margin-bottom: 60px;">
-                <div class="about-images fade-in">
-                    <div class="about-img-main">
-                        <!-- PHOTO LOCATION: Balcony photo, lazy loaded, width/height optimized -->
-                        <img src="img/balkone/Balkone_black.jpeg" 
-                             alt="Freistehender Vorstellbalkon aus Stahl - HSN Metallbau Kraichtal" 
-                             width="800" height="500"
-                             loading="lazy"
-                             onerror="handleImageError(this)">
-                    </div>
-                    <div class="about-img-badge">
-                        <div class="number">25+</div>
-                        <div class="text" data-i18n="balconies_badge_text">Typen</div>
-                    </div>
-                </div>
-
-                <div class="about-content fade-in">
-                    <h3 data-i18n="balconies_subtitle">Individuelle Balkonlösungen</h3>
-                    <p data-i18n="balconies_p1">Ein Balkon ist weit mehr als nur ein Außenbereich   er ist eine Erweiterung Ihres Lebensraumes. Wir bieten komplette Balkonsysteme von der Konstruktion bis zur fertigen Montage, die sich harmonisch in die Architektur Ihres Gebäudes einfügen.</p>
-                    
-                    <div class="about-features" style="margin-top: 32px;">
-                        <div class="about-feature">
-                            <i class="fas fa-layer-group"></i>
-                            <div>
-                                <h4 data-i18n="balconies_types_title">Balkon-Systeme</h4>
-                                <p data-i18n="balconies_types_desc">Vorstellbalkone, Anbaubalkone und freitragende Konstruktionen.</p>
-                            </div>
-                        </div>
-                        <div class="about-feature">
-                            <i class="fas fa-shield-alt"></i>
-                            <div>
-                                <h4 data-i18n="balconies_railing_title">Geländer-Designs</h4>
-                                <p data-i18n="balconies_railing_desc">Edelstahl, Lochblech, Glas oder Stabsysteme in jeder Farbe.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-                <!-- NEW: REUSABLE COMING SOON CARD COMPONENT (Future expansion ready) -->
-                <div class="service-card fade-in" style="border-style: dashed; background: rgba(255,255,255,0.01);">
-                    <div class="service-body" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 350px;">
-                        <div class="service-icon" style="background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); color: var(--color-text-muted);"><i class="fas fa-plus"></i></div>
-                        <h3 data-i18n="svc_coming_soon" style="color: var(--color-text-muted);">In Planung</h3>
-                        <p data-i18n="svc_coming_soon_desc" style="margin-bottom: 0;">Wir erweitern ständig unser Angebot. Haben Sie ein spezielles Projekt im Sinn? Kontaktieren Sie uns gerne!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- PROCESS -->
     <section class="process" id="process">
         <div class="container">
@@ -710,27 +604,39 @@
                 <button class="filter-btn" data-filter="carports" data-i18n="svc_carports">Carports</button>
             </div>
 
-            <!-- NEW: Dynamic Gallery Grid populated by JS Photo Management Array -->
-            <div class="gallery-grid">
-                <!-- Fallback content, will be overwritten by JS dynamically on mount -->
-                <div class="gallery-item tall fade-in">
-                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" alt="Edelstahl Wendeltreppe Projekt Kraichtal - HSN Metallbau" width="600" height="450" loading="lazy">
-                    <div class="gallery-item-overlay">
-                        <h4 data-i18n="gal1_title">Wendeltreppe Privathaus</h4>
-                        <p>Kraichtal · Edelstahl & Glas</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Dynamic Gallery Grid populated by JS -->
+            <div class="gallery-grid" id="galleryGrid"></div>
 
-            <!-- NEW: Reusable "Mehr Projekte" Button for future page extension -->
+            <!-- Load-More Button -->
             <div class="gallery-cta fade-in" style="text-align: center; margin-top: 40px;">
-                <a href="#contact" class="btn-outline">
+                <button id="galleryLoadMore" class="btn-outline">
                     <i class="fas fa-images"></i>
                     <span data-i18n="btn_more_projects">Mehr Projekte</span>
-                </a>
+                </button>
             </div>
         </div>
     </section>
+
+    <!-- ===== LIGHTBOX MODAL ===== -->
+    <div id="galleryLightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Bildvorschau">
+        <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+        <button class="lightbox__close" id="lightboxClose" aria-label="Schließen">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Vorheriges Bild">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="lightbox__stage">
+            <img id="lightboxImg" class="lightbox__img" src="" alt="">
+            <div class="lightbox__footer">
+                <div class="lightbox__caption" id="lightboxCaption"></div>
+                <div class="lightbox__counter" id="lightboxCounter"></div>
+            </div>
+        </div>
+        <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Nächstes Bild">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
 
     <!-- NEW: DEDICATED "TREPPEN" (STAIRS) SECTION -->
     <section class="treppen-section" id="treppen">
@@ -871,7 +777,14 @@
             </div>
         </div>
     </section>
-
+    <!-- NEW: REUSABLE COMING SOON CARD COMPONENT (Future expansion ready) -->
+                <!-- <div class="service-card fade-in" style="border-style: dashed; background: rgba(119, 61, 61, 0.01);">
+                    <div class="service-body" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 70px;">
+                        <div class="service-icon" style="background: rgba(190, 101, 101, 0.03); border-color: rgba(255,255,255,0.05); color: var(--color-text-muted);"><i class="fas fa-plus"></i></div>
+                        <h3 data-i18n="svc_coming_soon" style="color: var(--color-text-muted);">In Planung</h3>
+                        <p data-i18n="svc_coming_soon_desc" style="margin-bottom: 0;">Wir erweitern ständig unser Angebot. Haben Sie ein spezielles Projekt im Sinn? Kontaktieren Sie uns gerne!</p>
+                    </div>
+                </div> -->
     <!-- TRUST SIGNALS -->
     <section class="trust" id="trust">
         <div class="container">
