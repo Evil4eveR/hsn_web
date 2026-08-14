@@ -175,6 +175,40 @@ function initializeApp() {
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+    // ===== STAT COUNTER ANIMATION =====
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (!prefersReducedMotion) {
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    const targetText = entry.target.textContent.trim();
+                    const targetNum = parseInt(targetText.replace(/\D/g, ''), 10);
+                    const suffix = targetText.replace(/[0-9]/g, '');
+                    
+                    if (!isNaN(targetNum)) {
+                        let currentNum = 0;
+                        const duration = 1500; // 1.5 seconds
+                        const stepTime = Math.max(16, duration / targetNum);
+                        
+                        const timer = setInterval(() => {
+                            currentNum += Math.ceil(targetNum / (duration / 16));
+                            if (currentNum >= targetNum) {
+                                currentNum = targetNum;
+                                clearInterval(timer);
+                            }
+                            entry.target.textContent = currentNum + suffix;
+                        }, stepTime);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.stat-number, .number').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+    }
     // ===== FAQ ACCORDION =====
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
@@ -334,8 +368,9 @@ function initializeApp() {
         const item = document.createElement('div');
         item.className = 'gallery-item fade-in';
         item.dataset.id = img.id;
+        item.dataset.category = img.category; // Needed for CSS filtering later
         item.innerHTML = `
-            <img src="${img.src}" alt="${altText}" width="600" height="450" loading="lazy" onerror="handleImageError(this)">
+            <img src="${img.src}" alt="${altText}" width="600" height="450" loading="lazy" decoding="async" onerror="handleImageError(this)">
             <div class="gallery-item-overlay">
                 <h4>${titleText}</h4>
                 <p>${descText}</p>
@@ -349,17 +384,35 @@ function initializeApp() {
     function renderGallery(reset = false) {
         const grid = document.getElementById('galleryGrid');
         const loadMoreBtn = document.getElementById('galleryLoadMore');
+        const emptyState = document.getElementById('galleryEmptyState');
         if (!grid) return;
-
+        
         const filtered = getFiltered();
+
+        // Handle empty state
+        if (emptyState) {
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                grid.classList.add('hidden');
+                if (loadMoreBtn) loadMoreBtn.hidden = true;
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+                grid.classList.remove('hidden');
+            }
+        }
 
         if (reset) {
             grid.innerHTML = '';
             visibleCount = 0;
         }
 
+        // Use DocumentFragment for performance batching
+        const fragment = document.createDocumentFragment();
         const nextBatch = filtered.slice(visibleCount, visibleCount + BATCH_SIZE);
-        nextBatch.forEach(img => grid.appendChild(buildCard(img)));
+        nextBatch.forEach(img => fragment.appendChild(buildCard(img)));
+        grid.appendChild(fragment);
+        
         visibleCount += nextBatch.length;
 
         // Show/hide load-more button
@@ -378,7 +431,8 @@ function initializeApp() {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentFilter = btn.dataset.filter;
-            renderGallery(true);   // reset = true → clear grid
+            // Always reset on filter change to ensure the array math matches the DOM
+            renderGallery(true);
         });
     });
 
@@ -400,6 +454,7 @@ function initializeApp() {
     const lbPrev      = document.getElementById('lightboxPrev');
     const lbNext      = document.getElementById('lightboxNext');
     const lbBackdrop  = document.getElementById('lightboxBackdrop');
+    const lbRawLink   = document.getElementById('lightboxRawLink'); // New link
 
     let lbIndex = 0;   // index in the currently filtered set
 
@@ -414,6 +469,7 @@ function initializeApp() {
         lbImg.alt     = img['alt_'   + lang] || img.alt_de;
         lbCaption.textContent = img['title_' + lang] || img.title_de;
         lbCounter.textContent = `${lbIndex + 1} / ${filtered.length}`;
+        if (lbRawLink) lbRawLink.href = img.src; // Set raw link href
 
         lightbox.classList.add('is-open');
         document.body.style.overflow = 'hidden';
@@ -450,6 +506,36 @@ function initializeApp() {
         if (e.key === 'Escape')     closeLightbox();
         if (e.key === 'ArrowLeft')  navigateLightbox(-1);
         if (e.key === 'ArrowRight') navigateLightbox(+1);
+    });
+
+    // Touch Swipe Navigation for Mobile Lightbox (With Vertical Scroll Threshold)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    lightbox.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', e => {
+        if (!lightbox.classList.contains('is-open')) return;
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        
+        // Directional Threshold: Only trigger swipe if horizontal movement is 1.5x greater than vertical
+        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+            // Significant horizontal swipe
+            if (deltaX > 50) {
+                // Swiped right -> go to previous
+                navigateLightbox(-1);
+            } else if (deltaX < -50) {
+                // Swiped left -> go to next
+                navigateLightbox(+1);
+            }
+        }
     });
 
 } // <-- Added missing closing brace for initializeApp()

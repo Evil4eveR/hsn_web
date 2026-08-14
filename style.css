@@ -57,6 +57,14 @@
             overflow-x: hidden;
         }
 
+        h1, h2, h3, h4, h5, h6 {
+            text-wrap: balance;
+            overflow-wrap: break-word;
+        }
+
+        /* ── Hidden Utility ── */
+        .hidden { display: none !important; }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--color-bg); }
         /* NEW: Scrollbar matches the blue steel theme */
@@ -386,6 +394,8 @@
         .stat-label {
             font-size: 13px;
             color: var(--color-text-muted);
+            text-wrap: balance;
+            overflow-wrap: break-word;
             font-weight: 500;
         }
 
@@ -529,7 +539,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.35);
         }
         .service-img {
-            width: 100%; height: 220px;
+            width: 100%; 
+            aspect-ratio: 4 / 3;
             overflow: hidden;
             position: relative;
         }
@@ -699,6 +710,8 @@
             cursor: pointer;
             background: var(--color-bg-card);
         }
+        /*class moving the pictures in gallery smoothly */
+        .gallery-item.hidden-item { display: none !important; }
         /* Remove broken span modifiers on small screens — cards always stay uniform */
         .gallery-item.tall,
         .gallery-item.wide { grid-row: unset; grid-column: unset; aspect-ratio: 4 / 3; }
@@ -706,6 +719,7 @@
         .gallery-item img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
             object-fit: cover;
             transition: transform 0.45s ease;
             display: block;
@@ -820,13 +834,15 @@
             max-width: min(90vw, 1200px);
             max-height: 92vh;
         }
+        /* Image itself */
         .lightbox__img {
+            display: block;
             max-width: 100%;
             max-height: 80vh;
-            object-fit: contain;
             border-radius: 0.5rem;
-            box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-            display: block;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            outline: none;
+            touch-action: pan-zoom;
         }
         .lightbox__footer {
             display: flex;
@@ -1050,7 +1066,7 @@
 
         /* FOOTER */
         .footer {
-            background: #080B0F; /* NEW: Tuned to match cool blue-grey dark tones */
+            background: #080B0F; /* NEW: Tuned to cool blue-grey dark tones */
             border-top: 1px solid var(--color-border);
             padding: 60px 24px 24px;
         }
@@ -1234,6 +1250,11 @@
             .footer-grid { grid-template-columns: 1fr 1fr; }
         }
 
+        @media (max-width: 850px) and (min-width: 481px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-stats { gap: 1.5rem; }
+        }
+
         @media (max-width: 768px) {
             /* Tablets Portrait */
             .hero-stats { grid-template-columns: repeat(2, 1fr); }
@@ -1282,14 +1303,14 @@
                 font-size: 0.875rem;
             }
 
-            /* Lightbox: smaller arrows on mobile */
+            /* Increased touch targets and spacing for mobile */
             .lightbox__arrow {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 0.875rem;
+                width: 3rem;
+                height: 3rem;
+                font-size: 1rem;
             }
-            .lightbox__arrow--prev { left: 0.5rem; }
-            .lightbox__arrow--next { right: 0.5rem; }
+            .lightbox__arrow--prev { left: 1rem; }
+            .lightbox__arrow--next { right: 1rem; }
             .lightbox__stage { max-width: 95vw; }
         }
 
@@ -1325,3 +1346,40 @@
     .fade-image.active {
         opacity: 1;
     }
+
+    /* --- زر الواتساب العائم والمطور --- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px; /* 👈 تم رفعه ليكون فوق دائرة الصعود بمسافة كافية وحزام أمان */
+    left: 30px;   /* 👈 عاد لجهة اليمين */
+    background-color: #19a64d;
+    color: #fff !important;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, .4);
+    z-index: 1000 !important; /* طبقة عليا حاسمة */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* تأكيد تنسيق أيقونة الواتساب الداخلية باللون الأبيض */
+.whatsapp-float i, 
+.whatsapp-float .fab {
+    color: #ffffff !important;
+    display: inline-block;
+}
+
+
+/* تأثير الهوفر عند تمرير الماوس */
+.whatsapp-float:hover {
+    background-color: #128C7E;
+    transform: scale(1.08);
+}
