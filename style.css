@@ -1237,7 +1237,7 @@
             .container { max-width: 1200px; }
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1150px) {
             /* Laptops & Tablets Landscape (Collapse desktop nav under 1024px to completely eliminate visual overlaps) */
             .nav-desktop { display: none; }
             .mobile-toggle { display: inline-flex; }
@@ -1382,4 +1382,188 @@
 .whatsapp-float:hover {
     background-color: #128C7E;
     transform: scale(1.08);
+}
+
+/* إخفاء روابط Treppen و Balkone فقط بين شاشات 1025px و 1260px لضبط المساحة */
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .nav-desktop a[href="#treppen"],
+    .nav-desktop a[href="#balkone"] {
+        display: none !important;
+    }
+    
+    /* تقليل المسافات البينية قليلاً لضمان عدم حدوث تداخل */
+    .nav-desktop {
+        gap: 4px;
+    }
+    
+    .nav-link {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+}
+
+/*for the reviews*/
+/* REVIEWS SECTION STYLES */
+.reviews-section {
+    background: var(--color-bg);
+    padding: 100px 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.rev-slider {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rev-slider-viewport {
+    overflow: hidden;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.rev-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.rev-card {
+    flex: 0 0 calc(33.333% - 16px);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: var(--transition);
+}
+
+.rev-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+}
+
+.rev-stars {
+    color: #f59e0b;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.rev-txt {
+    color: var(--color-text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.rev-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rev-av {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-bg-light);
+}
+
+.rev-av img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rev-av-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: white;
+    background: var(--color-primary);
+    font-size: 18px;
+}
+
+.rev-nm {
+    font-weight: 600;
+    color: white;
+    font-size: 15px;
+}
+
+.rev-pl {
+    font-size: 12px;
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+/* Slider Controls */
+.sl-ctrl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.sl-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sl-btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.sl-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.sl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.sl-dot.active {
+    background: var(--color-primary);
+    width: 24px;
+    border-radius: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .rev-card {
+        flex: 0 0 calc(50% - 12px);
+    }
+}
+
+@media (max-width: 640px) {
+    .rev-card {
+        flex: 0 0 100%;
+    }
 }

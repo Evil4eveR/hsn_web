@@ -610,3 +610,92 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000); // 2000 milliseconds = 2 seconds
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('revTrack');
+    const prevBtn = document.getElementById('slPrev');
+    const nextBtn = document.getElementById('slNext');
+    const dotsContainer = document.getElementById('slDots');
+    
+    if (!track) return;
+
+    const cards = track.querySelectorAll('.rev-card');
+    let currentIndex = 0;
+
+    // الحصول على عدد البطاقات المرئية بناءً على حجم الشاشة
+    function getVisibleCardsCount() {
+        if (window.innerWidth <= 640) return 1;
+        if (window.innerWidth <= 1024) return 2;
+        return 3;
+    }
+
+    // حساب إجمالي السلايدات المتاحة
+    function getMaxIndex() {
+        return cards.length - getVisibleCardsCount();
+    }
+
+    // إنشاء النقاط السفلى (Dots)
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        const maxIndex = getMaxIndex();
+        for (let i = 0; i <= maxIndex; i++) {
+            const dot = document.createElement('button');
+            dot.classList.add('sl-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    // تحديث مكان السلايدر والنقاط
+    function updateSlider() {
+        const cardWidth = cards[0].getBoundingClientRect().width;
+        const gap = 24; // نفس قيمة Gap في CSS
+        const maxIndex = getMaxIndex();
+
+        if (currentIndex > maxIndex) currentIndex = maxIndex;
+        if (currentIndex < 0) currentIndex = 0;
+
+        const amountToMove = (cardWidth + gap) * currentIndex;
+        track.style.transform = `translateX(-${amountToMove}px)`;
+
+        // تحديث النقاط النشطة
+        const dots = dotsContainer.querySelectorAll('.sl-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    function goToSlide(index) {
+        currentIndex = index;
+        updateSlider();
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < getMaxIndex()) {
+            currentIndex++;
+        } else {
+            currentIndex = 0; // العودة للبداية
+        }
+        updateSlider();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = getMaxIndex(); // الذهاب للنهاية
+        }
+        updateSlider();
+    });
+
+    // إعادة التهيئة عند تغيير حجم النافذة
+    window.addEventListener('resize', () => {
+        createDots();
+        updateSlider();
+    });
+
+    // البدء
+    createDots();
+    updateSlider();
+});
