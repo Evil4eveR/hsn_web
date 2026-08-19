@@ -245,14 +245,6 @@ function initializeApp() {
         cookieBanner.classList.remove('show');
     });
 
-    // ===== CONTACT FORM =====
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert(currentLang === 'de' ? 'Vielen Dank für Ihre Anfrage! Wir werden uns in Kürze bei Ihnen melden.' :
-              currentLang === 'en' ? 'Thank you for your inquiry! We will get back to you shortly.' :
-              'Merci pour votre demande ! Nous vous contacterons sous peu.');
-    });
-
     // ===== BACK TO TOP BUTTON LOGIC =====
     const backToTop = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
@@ -698,4 +690,60 @@ document.addEventListener('DOMContentLoaded', () => {
     // البدء
     createDots();
     updateSlider();
+});
+
+
+ // ===== CONTACT FORM =====
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // منع إعادة تحميل الصفحة
+
+    const fileInput = document.getElementById('file');
+    const form = this;
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // 1. التحقق من حجم الملفات (أقل من 10MB)
+    if (fileInput.files.length > 0) {
+        let totalSize = 0;
+        for (let i = 0; i < fileInput.files.length; i++) {
+            totalSize += fileInput.files[i].size;
+        }
+
+        if (totalSize > 10485760) { // 10 MB
+            alert('Die Datei ist zu groß! Die maximal zulässige Größe beträgt 10 MB.');
+            return;
+        }
+    }
+
+    // 2. تغيير حالة الزر
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wird gesendet...';
+
+    // 3. إرسال البيانات المباشرة بدون /ajax/ لضمان قبول الملف المرفق
+    const formData = new FormData(form);
+
+    fetch('https://formsubmit.co/ymarmoud@gmail.com', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert(currentLang === 'de' ? 'Vielen Dank für Ihre Anfrage! Wir werden uns in Kürze bei Ihnen melden.' :
+              currentLang === 'en' ? 'Thank you for your inquiry! We will get back to you shortly.' :
+              'Merci pour votre demande ! Nous vous contacterons sous peu.');
+            form.reset(); // إعادة إعادة تعيين حقول النموذج
+        } else {
+            alert('Fehler beim Senden. Bitte überprüfen Sie Ihre Eingaben.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Verbindungsfehler. Bitte versuchen Sie es erneut.');
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer la demande';
+    });
 });
