@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "img/balkone/balkone.jpeg",
     "img/balkone/Balkone_try.jpeg",
     "img/balkone/Balkone_black.jpeg",
-    "img/balkone/Balkone_kbir.jpeg",
+    "img/balkone/balkone_kbir.jpeg",
     "img/balkone/balkone_mzyan.jpeg",
 
     // // --- CARPORTS (4 images) ---
