@@ -721,7 +721,7 @@ document.getElementById('contactForm').addEventListener('submit', function(event
     // 3. إرسال البيانات المباشرة بدون /ajax/ لضمان قبول الملف المرفق
     const formData = new FormData(form);
 
-    fetch('https://formsubmit.co/ymarmoud@gmail.com', {
+    fetch('https://formsubmit.co/info@metallbau-und-schlossereitechnik-hsn.de', {
         method: 'POST',
         body: formData,
         headers: {
